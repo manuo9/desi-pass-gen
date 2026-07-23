@@ -1,0 +1,162 @@
+---
+const path = Astro.url.pathname;
+---
+
+<header class="border-b border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800">
+  <div
+    class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:h-20 sm:px-6"
+  >
+    <!-- Logo -->
+    <a
+      href="/"
+      class="flex items-center gap-3 font-bold text-brand-500 transition-opacity hover:opacity-80 dark:text-brand-dark"
+    >
+      <img
+        src="/logo.png"
+        alt="Desi Pass Gen"
+        class="h-9 w-9 sm:h-11 sm:w-11"
+      />
+
+      <span class="text-base font-bold sm:text-xl">
+        Desi Pass Gen
+      </span>
+    </a>
+
+    <!-- Desktop Navigation -->
+    <div class="hidden items-center gap-7 md:flex">
+      <nav class="flex items-center gap-7 text-base font-semibold text-slate-700 dark:text-slate-200">
+        <a
+          href="/"
+          class:list={[
+            "transition-colors hover:text-brand-500 dark:hover:text-brand-dark",
+            path === "/" && "text-brand-500 dark:text-brand-dark",
+          ]}
+        >
+          Generator
+        </a>
+
+        <a
+          href="/how-it-works"
+          class:list={[
+            "transition-colors hover:text-brand-500 dark:hover:text-brand-dark",
+            path === "/how-it-works" &&
+              "text-brand-500 dark:text-brand-dark",
+          ]}
+        >
+          How It Works
+        </a>
+
+        <a
+          href="/faq"
+          class:list={[
+            "transition-colors hover:text-brand-500 dark:hover:text-brand-dark",
+            path === "/faq" && "text-brand-500 dark:text-brand-dark",
+          ]}
+        >
+          FAQ
+        </a>
+      </nav>
+
+      <button
+        id="theme-toggle"
+        type="button"
+        aria-label="Toggle dark mode"
+        class="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-700 transition-colors hover:border-brand-500 hover:text-brand-500 dark:border-slate-600 dark:text-slate-200 dark:hover:border-brand-dark dark:hover:text-brand-dark"
+      >
+        <span id="theme-icon-wrap">
+          <span id="theme-icon-light" class="hidden dark:inline">☀️</span>
+          <span id="theme-icon-dark" class="inline dark:hidden">🌙</span>
+        </span>
+      </button>
+    </div>
+
+    <!-- Mobile Actions -->
+    <div class="flex items-center gap-2 md:hidden">
+      <button
+        id="theme-toggle-mobile"
+        type="button"
+        aria-label="Toggle dark mode"
+        class="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-700 transition-colors hover:border-brand-500 hover:text-brand-500 dark:border-slate-600 dark:text-slate-200"
+      >
+        🌙
+      </button>
+
+      <button
+        id="mobile-menu-button"
+        type="button"
+        aria-label="Open navigation"
+        class="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-xl text-slate-700 transition-colors hover:border-brand-500 hover:text-brand-500 dark:border-slate-600 dark:text-slate-200"
+      >
+        ☰
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div
+  id="mobile-menu"
+  class="max-h-0 overflow-hidden border-t border-slate-200 bg-white transition-all duration-300 dark:border-slate-700 dark:bg-slate-800 md:hidden"
+>
+    <nav class="flex flex-col px-4 py-3 text-base font-semibold">
+      <a
+        href="/"
+        class="rounded-lg px-3 py-3 hover:bg-slate-100 dark:hover:bg-slate-700"
+      >
+        Generator
+      </a>
+
+      <a
+        href="/how-it-works"
+        class="rounded-lg px-3 py-3 hover:bg-slate-100 dark:hover:bg-slate-700"
+      >
+        How It Works
+      </a>
+
+      <a
+        href="/faq"
+        class="rounded-lg px-3 py-3 hover:bg-slate-100 dark:hover:bg-slate-700"
+      >
+        FAQ
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script is:inline>
+  function toggleTheme(iconWrap) {
+    const isDark = document.documentElement.classList.toggle("dark");
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+
+    if (iconWrap) {
+      iconWrap.classList.remove("animate-theme-toggle");
+      void iconWrap.offsetWidth;
+      iconWrap.classList.add("animate-theme-toggle");
+    }
+  }
+
+  const desktopToggle = document.getElementById("theme-toggle");
+  const mobileToggle = document.getElementById("theme-toggle-mobile");
+  const iconWrap = document.getElementById("theme-icon-wrap");
+
+  desktopToggle?.addEventListener("click", () => toggleTheme(iconWrap));
+  mobileToggle?.addEventListener("click", () => toggleTheme(iconWrap));
+
+  const menuBtn = document.getElementById("mobile-menu-button");
+  const menu = document.getElementById("mobile-menu");
+
+  menuBtn?.addEventListener("click", () => {
+  if (menu.classList.contains("max-h-0")) {
+    menu.classList.remove("max-h-0");
+    menu.classList.add("max-h-64");
+  } else {
+    menu.classList.remove("max-h-64");
+    menu.classList.add("max-h-0");
+  }
+});
+document.querySelectorAll("#mobile-menu a").forEach((link) => {
+  link.addEventListener("click", () => {
+    menu.classList.remove("max-h-64");
+    menu.classList.add("max-h-0");
+  });
+});
+</script>

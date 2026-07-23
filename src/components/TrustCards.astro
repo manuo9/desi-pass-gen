@@ -1,0 +1,40 @@
+---
+// Four minimal trust cards below the generator card. Replaces the
+// bullet list that used to sit beside the generator on desktop.
+const items = [
+  { icon: "🛡", title: "100% Local", desc: "Nothing ever leaves your browser." },
+  {
+    icon: "⚡",
+    title: "Cryptographically Secure",
+    desc: "Uses crypto.getRandomValues for secure randomness.",
+  },
+  { icon: "🔒", title: "No Tracking", desc: "No accounts, no analytics on your passphrase." },
+  {
+    icon: "🇮🇳",
+    title: "Made for Hinglish Users",
+    desc: "800 familiar, everyday words.",
+  },
+];
+---
+
+<section class="max-w-5xl mx-auto px-5 sm:px-6 pt-16 pb-14 sm:pt-20 sm:pb-20">
+  <div class="text-center mb-8">
+    <p class="text-sm font-bold uppercase tracking-[0.16em] text-brand-600 dark:text-brand-dark">Built for trust</p>
+    <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Simple on the surface. Serious underneath.</h2>
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    {
+      items.map((item) => (
+        <div class="trust-card text-center p-5 sm:p-6">
+          <div class="trust-icon mx-auto mb-4">{item.icon}</div>
+          <h3 class="text-base font-bold text-slate-800 dark:text-slate-100 mb-2">
+            {item.title}
+          </h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+            {item.desc}
+          </p>
+        </div>
+      ))
+    }
+  </div>
+</section>

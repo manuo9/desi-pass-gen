@@ -1,0 +1,22 @@
+---
+const questions = [
+  "Is this actually secure?",
+  "Where is my passphrase generated?",
+  "What makes a passphrase memorable?",
+];
+---
+
+<section class="max-w-4xl mx-auto px-5 sm:px-6 pb-20">
+  <div class="faq-preview rounded-[28px] p-7 sm:p-10">
+    <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5 mb-7">
+      <div>
+        <p class="text-sm font-bold uppercase tracking-[0.16em] text-brand-600 dark:text-brand-dark">Questions, answered</p>
+        <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Security without the fine print.</h2>
+      </div>
+      <a href="/faq" class="inline-flex w-fit items-center gap-2 font-semibold text-brand-600 hover:text-brand-700 dark:text-brand-dark">View all FAQs <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="grid sm:grid-cols-3 gap-3">
+      {questions.map((question) => <a href="/faq" class="faq-question">{question}<span aria-hidden="true">↗</span></a>)}
+    </div>
+  </div>
+</section>

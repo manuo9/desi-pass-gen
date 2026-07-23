@@ -1,0 +1,263 @@
+---
+// The generator itself: a wide, centered card containing the password
+// display, action buttons, and options. All interactivity is wired up
+// client-side in the inline <script> below, which imports the pure
+// logic from src/lib/generate.ts and the bundled wordlist.json. No
+// network requests are made by any of this code at runtime.
+import PasswordDisplay from "./PasswordDisplay.astro";
+import GeneratorControls from "./GeneratorControls.astro";
+---
+
+<div class="relative z-10 max-w-5xl mx-auto px-5 sm:px-6 -mt-24 sm:-mt-32">
+  <div
+    class="bg-white border border-slate-200/90 rounded-[28px] shadow-[0_24px_70px_rgb(15,23,42,0.14)] p-6 sm:p-8 lg:p-10 dark:bg-slate-800 dark:border-slate-700"
+  >
+    <PasswordDisplay />
+
+    <!-- Actions -->
+    <div class="flex flex-col sm:flex-row gap-4 mb-10">
+      <button
+        id="generate-btn"
+        type="button"
+       class="premium-button premium-button-primary flex-1 h-16 text-white font-bold text-lg rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-300 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-800"
+      >
+        🎲 Generate
+      </button>
+      <button
+        id="copy-btn"
+        type="button"
+       class="premium-button premium-button-dark flex-1 h-16 text-white font-bold text-lg rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-800"
+      >
+        📋 Copy
+      </button>
+    </div>
+
+    <GeneratorControls />
+  </div>
+
+  <p class="text-center text-xs text-slate-500 mt-5 dark:text-slate-400">
+    Uses <code>crypto.getRandomValues</code> for cryptographically secure
+    randomness. Read more on the 
+    <a
+      href="/how-it-works"
+      class="underline hover:text-brand-500 dark:hover:text-brand-dark"
+      >  How It Works</a
+    > page.
+  </p>
+</div>
+
+<script>
+  import {
+    generatePassphrase,
+    isSecureRandomAvailable,
+    DEFAULT_OPTIONS,
+    type GenerateOptions,
+    type Separator,
+    type Capitalization,
+    type StrengthLabel,
+  } from "../lib/generate";
+  import wordlist from "../data/wordlist.json";
+
+  const words = wordlist as string[];
+
+  const outputEl = document.getElementById(
+    "passphrase-output"
+  ) as HTMLDivElement;
+  const fallbackFieldEl = document.getElementById(
+    "fallback-copy-field"
+  ) as HTMLInputElement;
+  const strengthTextEl = document.getElementById(
+    "strength-text"
+  ) as HTMLSpanElement;
+  const entropyBitsLabelEl = document.getElementById(
+    "entropy-bits-label"
+  ) as HTMLSpanElement;
+  const strengthBarFillEl = document.getElementById(
+    "strength-bar-fill"
+  ) as HTMLDivElement;
+  const cryptoErrorEl = document.getElementById(
+    "crypto-error"
+  ) as HTMLDivElement;
+  const generateBtn = document.getElementById(
+    "generate-btn"
+  ) as HTMLButtonElement;
+  const copyBtn = document.getElementById("copy-btn") as HTMLButtonElement;
+  const inlineCopyBtn = document.getElementById(
+    "copy-inline-btn"
+  ) as HTMLButtonElement;
+
+  const wordCountInput = document.getElementById(
+    "word-count"
+  ) as HTMLInputElement;
+  const wordCountValueEl = document.getElementById(
+    "word-count-value"
+  ) as HTMLSpanElement;
+  const separatorSelect = document.getElementById(
+    "separator"
+  ) as HTMLSelectElement;
+  const capitalizationSelect = document.getElementById(
+    "capitalization"
+  ) as HTMLSelectElement;
+  const includeNumberCheckbox = document.getElementById(
+    "include-number"
+  ) as HTMLInputElement;
+  const includeSymbolCheckbox = document.getElementById(
+    "include-symbol"
+  ) as HTMLInputElement;
+  const entropyInfoBtn = document.getElementById(
+    "entropy-info-btn"
+  ) as HTMLButtonElement;
+  const entropyTooltip = document.getElementById(
+    "entropy-tooltip"
+  ) as HTMLSpanElement;
+
+  let currentPassphrase = "";
+
+  // Strength -> bar color + fill width. Five-step scale per the design
+  // spec (Weak/Fair/Good/Strong/Excellent), mapped onto the four
+  // strength labels the generator logic actually produces (Weak/Good/
+  // Strong/Very Strong) plus a finer-grained width so the bar still
+  // feels responsive to word count changes within a label band.
+  const STRENGTH_STYLES: Record<
+    StrengthLabel,
+    { color: string; minWidth: number }
+  > = {
+    Weak: { color: "bg-red-500", minWidth: 15 },
+    Good: { color: "bg-amber-500", minWidth: 45 },
+    Strong: { color: "bg-yellow-500", minWidth: 70 },
+    "Very Strong": { color: "bg-emerald-500", minWidth: 100 },
+  };
+
+  function readOptions(): GenerateOptions {
+    return {
+      wordCount: Number(wordCountInput.value),
+      separator: separatorSelect.value as Separator,
+      capitalization: capitalizationSelect.value as Capitalization,
+      includeNumber: includeNumberCheckbox.checked,
+      includeSymbol: includeSymbolCheckbox.checked,
+    };
+  }
+
+  function updateStrengthBar(bits: number, label: StrengthLabel) {
+    const style = STRENGTH_STYLES[label];
+    strengthTextEl.textContent = label === "Very Strong" ? "Excellent" : label;
+    entropyBitsLabelEl.textContent = `${bits.toFixed(1)} bits`;
+
+    // Cap the visual fill so the bar never looks "overfull" for very
+    // high entropy configurations, while still being proportional
+    // within a reasonable 0-100 bit display range.
+    const widthPercent = Math.min(100, Math.max(style.minWidth, (bits / 100) * 100));
+
+    strengthBarFillEl.className = `h-full rounded-full transition-all duration-500 ease-out ${style.color}`;
+    strengthBarFillEl.style.width = `${widthPercent}%`;
+  }
+
+  function renderResult() {
+    if (!isSecureRandomAvailable()) {
+      cryptoErrorEl.classList.remove("hidden");
+      generateBtn.disabled = true;
+      generateBtn.classList.add("opacity-50", "cursor-not-allowed");
+      outputEl.textContent = "Unavailable";
+      return;
+    }
+
+    const result = generatePassphrase(words, readOptions());
+    currentPassphrase = result.passphrase;
+
+    // Quick fade-out/in on the output so a new phrase doesn't just snap
+    // into place — a small bit of motion that makes the result feel
+    // more deliberate.
+    outputEl.classList.add("opacity-0");
+    window.setTimeout(() => {
+      outputEl.textContent = result.passphrase;
+      outputEl.classList.remove("opacity-0");
+    }, 100);
+
+    updateStrengthBar(result.entropyBits, result.strengthLabel);
+  }
+
+  async function copyToClipboard() {
+    if (!currentPassphrase) return;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      try {
+        await navigator.clipboard.writeText(currentPassphrase);
+        showCopiedConfirmation();
+        return;
+      } catch {
+        // fall through to fallback below
+      }
+    }
+
+    // Fallback: reveal a selectable input the user can copy manually.
+    fallbackFieldEl.value = currentPassphrase;
+    fallbackFieldEl.classList.remove("hidden");
+    fallbackFieldEl.focus();
+    fallbackFieldEl.select();
+  }
+
+  function showCopiedConfirmation() {
+    const original = copyBtn.textContent;
+    copyBtn.classList.remove("bg-slate-800", "hover:bg-slate-900", "dark:bg-slate-600", "dark:hover:bg-slate-500");
+    copyBtn.classList.add("bg-emerald-500", "hover:bg-emerald-600", "animate-pulse-once");
+    copyBtn.textContent = "✓ Copied";
+    setTimeout(() => {
+      copyBtn.textContent = original;
+      copyBtn.classList.remove("bg-emerald-500", "hover:bg-emerald-600", "animate-pulse-once");
+      copyBtn.classList.add("bg-slate-800", "hover:bg-slate-900", "dark:bg-slate-600", "dark:hover:bg-slate-500");
+    }, 1500);
+  }
+
+  wordCountInput.addEventListener("input", () => {
+    wordCountValueEl.textContent = wordCountInput.value;
+  });
+
+  generateBtn.addEventListener("click", renderResult);
+  copyBtn.addEventListener("click", copyToClipboard);
+  inlineCopyBtn.addEventListener("click", copyToClipboard);
+
+  function showTooltip() {
+    entropyTooltip.classList.remove("hidden");
+    // Two-step so the "hidden -> visible" transition can actually
+    // animate (removing display:none and animating opacity in the
+    // same tick doesn't transition).
+    requestAnimationFrame(() => {
+      entropyTooltip.classList.remove("opacity-0", "scale-95");
+    });
+  }
+
+  function hideTooltip() {
+    entropyTooltip.classList.add("opacity-0", "scale-95");
+    window.setTimeout(() => {
+      entropyTooltip.classList.add("hidden");
+    }, 150);
+  }
+
+  entropyInfoBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (entropyTooltip.classList.contains("hidden")) {
+      showTooltip();
+    } else {
+      hideTooltip();
+    }
+  });
+  document.addEventListener("click", (e) => {
+    if (
+      !entropyTooltip.classList.contains("hidden") &&
+      e.target !== entropyInfoBtn
+    ) {
+      hideTooltip();
+    }
+  });
+
+  separatorSelect.addEventListener("change", renderResult);
+  capitalizationSelect.addEventListener("change", renderResult);
+  includeNumberCheckbox.addEventListener("change", renderResult);
+  includeSymbolCheckbox.addEventListener("change", renderResult);
+  wordCountInput.addEventListener("change", renderResult);
+
+  // Auto-generate one passphrase on load using defaults, per requirement.
+  wordCountInput.value = String(DEFAULT_OPTIONS.wordCount);
+  wordCountValueEl.textContent = String(DEFAULT_OPTIONS.wordCount);
+  renderResult();
+</script>

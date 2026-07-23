@@ -1,0 +1,160 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Self-hosted fonts (via @fontsource) — no external network requests,
+   keeps the "100% client-side, nothing leaves your browser" promise
+   intact even for typography.
+   Inter: general UI text. JetBrains Mono: the generated passphrase
+   output specifically — a real monospace face makes ambiguous
+   characters (1/l, 0/O) visually distinct, which matters when a user
+   is reading a passphrase back to type it elsewhere. */
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+@import "@fontsource/jetbrains-mono/500.css";
+@import "@fontsource/jetbrains-mono/700.css";
+
+/* Enable class-based dark mode ("Dark Professional" theme), toggled by
+   adding/removing .dark on <html>, instead of Tailwind v4's default
+   media-query-only dark: variant. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Brand orange — Tailwind's built-in orange-600 (#EA580C) doesn't
+     match the "Premium Minimal" spec's #FF6B00, so it's defined here
+     as its own scale. Everything else (backgrounds/cards/borders/text)
+     uses Tailwind's existing slate-* scale, which already matches the
+     spec's hex values exactly (slate-50 = #F8FAFC, slate-900 =
+     #0F172A, slate-200 = #E2E8F0, slate-500 = #64748B, slate-800 =
+     #1E293B, slate-700 = #334155, slate-300 = #CBD5E1). */
+  --color-brand-50: #fff4ec;
+  --color-brand-100: #ffe4d1;
+  --color-brand-300: #ffb277;
+  --color-brand-500: #ff6b00;
+  --color-brand-600: #e85d04;
+  --color-brand-700: #c94e00;
+  /* Dark Professional theme uses a slightly brighter accent
+     (#FF7A1A) for sufficient contrast against dark surfaces. */
+  --color-brand-dark: #ff7a1a;
+  --color-brand-dark-hover: #ff8f3d;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+.hero-surface {
+  background: linear-gradient(135deg, #fff7f0 0%, #fffdfb 48%, #f6f8ff 100%);
+}
+.dark .hero-surface { background: linear-gradient(135deg, #1d1714 0%, #0f172a 70%); }
+.hero-orb { position: absolute; width: 28rem; height: 28rem; border-radius: 9999px; filter: blur(60px); opacity: .32; pointer-events: none; }
+.hero-orb-left { top: -18rem; left: -12rem; background: #ffb277; }
+.hero-orb-right { right: -14rem; bottom: -19rem; background: #c7d2fe; }
+.dark .hero-orb { opacity: .16; }
+
+.passphrase-stage { position: relative; overflow: hidden; border: 1px solid rgb(254 215 170); border-radius: 20px; padding: 1.25rem 1.25rem 1.4rem; background: linear-gradient(125deg, #fffaf5 0%, #fff 54%, #fff7ed 100%); }
+.dark .passphrase-stage { border-color: rgb(120 53 15); background: linear-gradient(125deg, #1e293b, #172033); }
+.passphrase-stage-glow { position: absolute; width: 14rem; height: 14rem; right: -6rem; bottom: -11rem; border-radius: 9999px; background: #fed7aa; filter: blur(24px); opacity: .48; pointer-events: none; }
+.dark .passphrase-stage-glow { background: #9a3412; opacity: .28; }
+.passphrase-icon { display: inline-grid; place-items: center; width: 1.75rem; height: 1.75rem; border-radius: .625rem; background: #ffedd5; font-size: .85rem; }
+.dark .passphrase-icon { background: #431407; }
+
+.premium-button { transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease; box-shadow: 0 8px 16px rgb(15 23 42 / .12); }
+.premium-button:hover { transform: translateY(-2px); box-shadow: 0 14px 24px rgb(15 23 42 / .18); }
+.premium-button:active { transform: translateY(1px) scale(.99); box-shadow: 0 4px 8px rgb(15 23 42 / .12); }
+.premium-button-primary { background: linear-gradient(135deg, #ff7a1a, #e85d04); }
+.premium-button-primary:hover { background: linear-gradient(135deg, #ff8a37, #ea580c); }
+.premium-button-dark { background: #1e293b; }
+.premium-button-dark:hover { background: #0f172a; }
+.dark .premium-button-dark { background: #475569; }
+.dark .premium-button-dark:hover { background: #64748b; }
+
+.trust-card { border: 1px solid rgb(226 232 240); border-radius: 20px; background: white; box-shadow: 0 5px 14px rgb(15 23 42 / .04); transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease; }
+.trust-card:hover { transform: translateY(-5px); border-color: rgb(254 215 170); box-shadow: 0 18px 32px rgb(15 23 42 / .11); }
+.dark .trust-card { border-color: rgb(51 65 85); background: rgb(30 41 59); }
+.dark .trust-card:hover { border-color: rgb(154 52 18); }
+.trust-icon { display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 1rem; background: #fff7ed; font-size: 1.4rem; }
+.dark .trust-icon { background: #431407; }
+
+.faq-preview { border: 1px solid rgb(226 232 240); background: linear-gradient(135deg, #fff 0%, #f8fafc 100%); box-shadow: 0 12px 30px rgb(15 23 42 / .06); }
+.dark .faq-preview { border-color: rgb(51 65 85); background: linear-gradient(135deg, #1e293b, #172033); }
+.faq-question { display: flex; justify-content: space-between; gap: 1rem; border: 1px solid rgb(226 232 240); border-radius: .9rem; padding: 1rem; color: rgb(51 65 85); font-size: .875rem; font-weight: 600; transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease; }
+.faq-question:hover { transform: translateY(-2px); border-color: #fdba74; box-shadow: 0 8px 18px rgb(15 23 42 / .08); color: #c2410c; }
+.dark .faq-question { border-color: rgb(51 65 85); color: rgb(226 232 240); }
+
+/* Custom range slider — replaces raw browser default appearance so it
+   matches the rest of the card's styling. */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-slate-200);
+  outline: none;
+}
+.dark input[type="range"] {
+  background: var(--color-slate-700);
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-brand-500);
+  border: 3px solid white;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.25);
+  cursor: pointer;
+  transition: transform 150ms ease;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-brand-500);
+  border: 3px solid white;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.25);
+  cursor: pointer;
+}
+.dark input[type="range"]::-webkit-slider-thumb,
+.dark input[type="range"]::-moz-range-thumb {
+  background: var(--color-brand-dark);
+  border-color: var(--color-slate-800);
+}
+
+/* One-shot pulse used on the Copy button when a copy succeeds. */
+@keyframes pulse-once {
+  0% {
+    box-shadow: 0 0 0 0 rgb(16 185 129 / 0.5);
+  }
+  100% {
+    box-shadow: 0 0 0 10px rgb(16 185 129 / 0);
+  }
+}
+.animate-pulse-once {
+  animation: pulse-once 600ms ease-out;
+}
+
+/* Rotate the theme toggle icon briefly on click, for a small tactile
+   confirmation that the theme actually switched. */
+@keyframes theme-toggle-spin {
+  from {
+    transform: rotate(-90deg) scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+.animate-theme-toggle {
+  display: inline-flex;
+  animation: theme-toggle-spin 300ms ease-out;
+}

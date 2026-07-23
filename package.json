@@ -1,0 +1,52 @@
+{
+  "name": "desi-pass-gen",
+  "description": "Generate strong, memorable Hinglish passphrases using the Web Crypto API. 100% client-side, open source, and privacy-focused.",
+  "type": "module",
+  "version": "1.0.0",
+  "homepage": "https://desipassgen.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manuo9/desi-pass-gen.git"
+  },
+  "keywords": [
+    "password",
+    "passphrase",
+    "password-generator",
+    "security",
+    "privacy",
+    "crypto",
+    "webcrypto",
+    "astro",
+    "typescript",
+    "tailwindcss",
+    "hinglish",
+    "desipassgen",
+    "india"
+  ],
+  "license": "MIT",
+  "author": "Manu Prasad",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "prebuild": "node scripts/check-wordlist.mjs",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "test": "vitest --run",
+    "test:watch": "vitest",
+    "check:wordlist": "node scripts/check-wordlist.mjs"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.1.1",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.20",
+    "vitest": "^4.1.10"
+  }
+}

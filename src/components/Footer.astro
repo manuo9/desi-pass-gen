@@ -1,0 +1,39 @@
+---
+// Site-wide footer, used inside BaseLayout on every page.
+const year = new Date().getFullYear();
+---
+
+<footer
+  class="border-t border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800"
+>
+  <div class="max-w-6xl mx-auto px-6 py-8">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
+      <a
+        href="/"
+        class="flex items-center gap-2 text-lg font-bold text-slate-800 dark:text-slate-100"
+      >
+        <img src="/logo.png" alt="" width="28" height="28" class="w-7 h-7" />
+        Desi Pass Gen
+      </a>
+      <nav class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-base font-semibold text-slate-600 dark:text-slate-300">
+        <a href="/how-it-works" class="hover:text-brand-500 dark:hover:text-brand-dark transition-colors"
+          >How It Works</a
+        >
+        <a href="/faq" class="hover:text-brand-500 dark:hover:text-brand-dark transition-colors"
+          > FAQ</a
+        >
+        <a
+          href="https://github.com/manuo9/desi-pass-gen"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hover:text-brand-500 dark:hover:text-brand-dark transition-colors"
+          >GitHub</a
+        >
+      </nav>
+    </div>
+    <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-2 border-t border-slate-100 pt-5 text-sm text-slate-500 dark:border-slate-700 dark:text-slate-400">
+      <p>&copy; {year} Desi Pass Gen · MIT License · v1.0.0 </p>
+      <p>Made with care in India 🇮🇳</p>
+    </div>
+  </div>
+</footer>

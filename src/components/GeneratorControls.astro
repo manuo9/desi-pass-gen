@@ -1,0 +1,116 @@
+---
+// Options for the generator: word count, separator, capitalization,
+// and the number/symbol toggles. Custom-styled select/range inputs
+// (see global.css) instead of raw browser defaults.
+---
+
+<div class="grid sm:grid-cols-2 gap-6 border-t border-slate-200 pt-6 dark:border-slate-700">
+  <div>
+    <label
+      for="word-count"
+      class="block text-sm font-medium text-slate-700 mb-2 dark:text-slate-300"
+    >
+      Number of words: <span id="word-count-value">6</span>
+    </label>
+    <input
+      id="word-count"
+      type="range"
+      min="3"
+      max="8"
+      step="1"
+      value="6"
+      class="w-full"
+    />
+  </div>
+
+  <div>
+    <label
+      for="separator"
+      class="block text-sm font-medium text-slate-700 mb-2 dark:text-slate-300"
+    >
+      Separator
+    </label>
+    <div class="relative">
+      <select
+        id="separator"
+        class="w-full appearance-none border border-slate-300 rounded-lg py-2.5 pl-3 pr-9 bg-white text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-300 hover:border-slate-400 transition-colors dark:bg-slate-900 dark:border-slate-600 dark:text-white dark:hover:border-slate-500"
+      >
+        <option value="-" selected>Hyphen (-)</option>
+        <option value="_">Underscore (_)</option>
+        <option value=" ">Space</option>
+        <option value="">None</option>
+      </select>
+      <svg
+        class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500"
+        viewBox="0 0 20 20"
+        fill="none"
+      >
+        <path
+          d="M5 7.5L10 12.5L15 7.5"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </div>
+  </div>
+
+  <div>
+    <label
+      for="capitalization"
+      class="block text-sm font-medium text-slate-700 mb-2 dark:text-slate-300"
+    >
+      Capitalization
+    </label>
+    <div class="relative">
+      <select
+        id="capitalization"
+        class="w-full appearance-none border border-slate-300 rounded-lg py-2.5 pl-3 pr-9 bg-white text-slate-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-300 hover:border-slate-400 transition-colors dark:bg-slate-900 dark:border-slate-600 dark:text-white dark:hover:border-slate-500"
+      >
+        <option value="sentence" selected>Sentence case (Recommended)</option>
+        <option value="lower">lowercase</option>
+        <option value="title">Title Case</option>
+        <option value="upper">UPPERCASE</option>
+        <option value="random">Random per word (Advanced/Fun)</option>
+      </select>
+      <svg
+        class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 dark:text-slate-500"
+        viewBox="0 0 20 20"
+        fill="none"
+      >
+        <path
+          d="M5 7.5L10 12.5L15 7.5"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-2.5 justify-center">
+    <label
+      class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300"
+    >
+      <input
+        id="include-number"
+        type="checkbox"
+        checked
+        class="accent-brand-500 dark:accent-brand-dark w-4 h-4"
+      />
+      Add a random number (0&ndash;99)
+    </label>
+    <label
+      class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-300"
+    >
+      <input
+        id="include-symbol"
+        type="checkbox"
+        class="accent-brand-500 dark:accent-brand-dark w-4 h-4"
+      />
+      Add a random symbol
+    </label>
+  </div>
+</div>

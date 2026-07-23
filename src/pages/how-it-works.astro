@@ -1,0 +1,249 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const settingExamples = [
+  {
+    setting: "6 words",
+    entropy: "57.9 bits",
+    use: "Base passphrase before extras",
+  },
+  {
+    setting: "6 words + number",
+    entropy: "64.5 bits",
+    use: "Current default",
+  },
+  {
+    setting: "7 words + number",
+    entropy: "74.2 bits",
+    use: "Stronger memorable secret",
+  },
+  {
+    setting: "8 words + number",
+    entropy: "83.8 bits",
+    use: "High-value master password territory",
+  },
+];
+---
+
+<BaseLayout
+  title="How It Works - Desi Pass Gen"
+  description="How Desi Pass Gen creates local, random Hinglish passphrases and how to choose the right word count for your use case."
+>
+  <article class="mx-auto max-w-5xl px-4 py-14 sm:px-6 lg:px-8">
+    <header class="max-w-3xl">
+      <p class="mb-3 text-sm font-bold uppercase tracking-[0.2em] text-brand-600 dark:text-brand-dark">
+        How it works
+      </p>
+      <h1 class="text-4xl font-black tracking-tight text-slate-950 dark:text-white sm:text-5xl">
+        Random words, made local and readable.
+      </h1>
+      <p class="mt-5 text-lg leading-8 text-slate-600 dark:text-slate-300">
+        Desi Pass Gen creates passphrases by choosing random Hinglish words in
+        your browser. The safety comes from the randomness and the number of
+        possible combinations; the Hinglish part makes the result easier for the
+        right user to read, type, and remember.
+      </p>
+    </header>
+
+    <section class="mt-12 grid gap-4 md:grid-cols-3" aria-label="Quick summary">
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+        <p class="text-sm font-bold uppercase tracking-[0.16em] text-brand-600 dark:text-brand-dark">
+          1. Choose
+        </p>
+        <h2 class="mt-3 text-xl font-bold text-slate-950 dark:text-white">
+          Pick a word count
+        </h2>
+        <p class="mt-3 leading-7 text-slate-600 dark:text-slate-300">
+          Six words plus a number is the default. Use seven or eight words for
+          high-value secrets you may need to remember.
+        </p>
+      </div>
+
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+        <p class="text-sm font-bold uppercase tracking-[0.16em] text-brand-600 dark:text-brand-dark">
+          2. Generate
+        </p>
+        <h2 class="mt-3 text-xl font-bold text-slate-950 dark:text-white">
+          Everything stays local
+        </h2>
+        <p class="mt-3 leading-7 text-slate-600 dark:text-slate-300">
+          The wordlist and generator code run inside your browser. Clicking
+          Generate does not send the passphrase to a server.
+        </p>
+      </div>
+
+      <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+        <p class="text-sm font-bold uppercase tracking-[0.16em] text-brand-600 dark:text-brand-dark">
+          3. Store
+        </p>
+        <h2 class="mt-3 text-xl font-bold text-slate-950 dark:text-white">
+          Use it once
+        </h2>
+        <p class="mt-3 leading-7 text-slate-600 dark:text-slate-300">
+          Save it somewhere trusted. A strong passphrase should still be unique;
+          never reuse the same one across sites.
+        </p>
+      </div>
+    </section>
+
+    <div class="mt-16 grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+      <section>
+        <h2 class="text-3xl font-black tracking-tight text-slate-950 dark:text-white">
+          Passphrase, not password soup
+        </h2>
+        <p class="mt-4 leading-8 text-slate-600 dark:text-slate-300">
+          A normal generated password can be very strong, but it is often
+          unpleasant to remember or type. A passphrase uses several random
+          words instead. If the words are picked randomly from a large enough
+          list, a longer phrase can be both human-readable and difficult to
+          guess.
+        </p>
+        <p class="mt-4 leading-8 text-slate-600 dark:text-slate-300">
+          This idea is commonly associated with Diceware-style passphrases. The
+          EFF's Dice-Generated Passphrases guide recommends using random word
+          selection and a unique passphrase for each purpose:
+          <a
+            href="https://www.eff.org/dice"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-semibold text-brand-600 underline-offset-4 hover:underline dark:text-brand-dark"
+            >EFF Dice-Generated Passphrases</a
+          >.
+        </p>
+      </section>
+
+      <aside class="rounded-2xl border border-orange-200 bg-orange-50/70 p-6 dark:border-orange-900 dark:bg-orange-950/30">
+        <h2 class="text-xl font-bold text-slate-950 dark:text-white">
+          Good places to use a memorable passphrase
+        </h2>
+        <ul class="mt-4 space-y-3 text-slate-700 dark:text-slate-300">
+          <li>Password manager master password</li>
+          <li>Device login or disk encryption password</li>
+          <li>Wi-Fi password you may need to share or type</li>
+          <li>Any important account where you must remember the secret</li>
+        </ul>
+        <p class="mt-5 text-sm leading-6 text-slate-600 dark:text-slate-400">
+          For most website accounts, a password manager or passkey is usually
+          the better everyday workflow.
+        </p>
+      </aside>
+    </div>
+
+    <section class="mt-16">
+      <h2 class="text-3xl font-black tracking-tight text-slate-950 dark:text-white">
+        Why Hinglish?
+      </h2>
+      <p class="mt-4 max-w-3xl leading-8 text-slate-600 dark:text-slate-300">
+        Security does not come from the words being obscure. It comes from the
+        words being chosen randomly. Hinglish makes the phrase feel more natural
+        for users who already think, text, and speak in this mix. Words like
+        <code class="rounded bg-slate-100 px-1.5 py-0.5 dark:bg-slate-800">chai</code>,
+        <code class="rounded bg-slate-100 px-1.5 py-0.5 dark:bg-slate-800">baarish</code>,
+        and
+        <code class="rounded bg-slate-100 px-1.5 py-0.5 dark:bg-slate-800">yaar</code>
+        are not secret; they are familiar. That is the point.
+      </p>
+    </section>
+
+    <section class="mt-16">
+      <div class="max-w-3xl">
+        <h2 class="text-3xl font-black tracking-tight text-slate-950 dark:text-white">
+          The entropy math
+        </h2>
+        <p class="mt-4 leading-8 text-slate-600 dark:text-slate-300">
+          The current wordlist has exactly 800 words. Each random word adds
+          <code class="rounded bg-slate-100 px-1.5 py-0.5 dark:bg-slate-800">log2(800)</code>,
+          or about 9.64 bits of entropy. The default setting uses 6 words and
+          adds one random number from 0 to 99.
+        </p>
+      </div>
+
+      <div class="mt-6 overflow-x-auto rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-800">
+        <div class="grid min-w-[640px] grid-cols-3 border-b border-slate-200 bg-slate-50 px-5 py-3 text-sm font-bold text-slate-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200">
+          <span>Setting</span>
+          <span>Entropy</span>
+          <span>Best read as</span>
+        </div>
+        {
+          settingExamples.map((row) => (
+            <div class="grid min-w-[640px] grid-cols-3 gap-3 border-b border-slate-100 px-5 py-4 last:border-b-0 dark:border-slate-700">
+              <span class="font-semibold text-slate-950 dark:text-white">{row.setting}</span>
+              <span class="font-mono text-slate-700 dark:text-slate-300">{row.entropy}</span>
+              <span class="text-slate-600 dark:text-slate-300">{row.use}</span>
+            </div>
+          ))
+        }
+      </div>
+
+      <p class="mt-5 max-w-3xl text-sm leading-7 text-slate-500 dark:text-slate-400">
+        Entropy is not a promise that something takes a specific number of
+        years to crack. It is a way to compare how many guesses a random
+        generator makes possible under the current settings.
+      </p>
+    </section>
+
+    <section class="mt-16 grid gap-10 lg:grid-cols-2">
+      <div>
+        <h2 class="text-3xl font-black tracking-tight text-slate-950 dark:text-white">
+          Where randomness comes from
+        </h2>
+        <p class="mt-4 leading-8 text-slate-600 dark:text-slate-300">
+          Desi Pass Gen uses
+          <code class="rounded bg-slate-100 px-1.5 py-0.5 dark:bg-slate-800">crypto.getRandomValues()</code>,
+          the browser's cryptographically secure random number generator for
+          passwords, keys, and other sensitive values.
+        </p>
+        <p class="mt-4 leading-8 text-slate-600 dark:text-slate-300">
+          Word selection uses rejection sampling so every word has the same
+          chance of being picked. Repeated words are allowed because each pick
+          is independent.
+        </p>
+      </div>
+
+      <div>
+        <h2 class="text-3xl font-black tracking-tight text-slate-950 dark:text-white">
+          Privacy model
+        </h2>
+        <p class="mt-4 leading-8 text-slate-600 dark:text-slate-300">
+          The generator logic and wordlist are bundled into the page. After the
+          page loads, clicking Generate runs locally. The generated passphrase
+          is not sent to a backend and is not saved by the site.
+        </p>
+        <p class="mt-4 leading-8 text-slate-600 dark:text-slate-300">
+          One honest detail: the site may save your theme choice in local
+          storage so dark mode stays dark. That is separate from the
+          passphrase, which is not stored.
+        </p>
+      </div>
+    </section>
+
+    <section class="mt-16 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-800">
+      <h2 class="text-2xl font-black tracking-tight text-slate-950 dark:text-white">
+        Practical security advice
+      </h2>
+      <p class="mt-4 leading-8 text-slate-600 dark:text-slate-300">
+        Modern password guidance is less about forcing symbols and more about
+        long, unique secrets, password managers, and multi-factor protection.
+        NIST recommends allowing paste and supporting password managers, while
+        OWASP recommends unique strong passwords and multi-factor
+        authentication for stronger account protection.
+      </p>
+      <div class="mt-5 flex flex-wrap gap-3 text-sm font-semibold">
+        <a
+          href="https://pages.nist.gov/800-63-4/sp800-63b.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="rounded-full border border-slate-200 px-4 py-2 text-slate-700 transition hover:-translate-y-0.5 hover:border-brand-300 hover:text-brand-600 dark:border-slate-700 dark:text-slate-300 dark:hover:border-brand-dark dark:hover:text-brand-dark"
+          >NIST password guidance</a
+        >
+        <a
+          href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="rounded-full border border-slate-200 px-4 py-2 text-slate-700 transition hover:-translate-y-0.5 hover:border-brand-300 hover:text-brand-600 dark:border-slate-700 dark:text-slate-300 dark:hover:border-brand-dark dark:hover:text-brand-dark"
+          >OWASP authentication guidance</a
+        >
+      </div>
+    </section>
+  </article>
+</BaseLayout>

@@ -1,0 +1,99 @@
+---
+import "../styles/global.css";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = "Free Hinglish passphrase generator. Strong, memorable passwords built from everyday Hindi-English words. 100% client-side — nothing is ever sent to a server.",
+} = Astro.props;
+
+const siteUrl = "https://YOURDOMAIN.com";
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
+const ogImage = `${siteUrl}/og-image.png`;
+
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  />
+
+  <meta
+    name="description"
+    content={description}
+  />
+
+  <meta
+    name="theme-color"
+    content="#FF6B00"
+  />
+
+  <meta
+    name="generator"
+    content={Astro.generator}
+  />
+
+  <title>{title}</title>
+
+  <!-- Canonical -->
+  <link rel="canonical" href={canonicalUrl} />
+
+  <!-- Favicons -->
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:site_name" content="Desi Pass Gen" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+
+  <script is:inline>
+    (function () {
+      var stored = localStorage.getItem("theme");
+      var prefersDark =
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+      var isDark = stored === "dark" || (!stored && prefersDark);
+
+      if (isDark) {
+        document.documentElement.classList.add("dark");
+      }
+    })();
+  </script>
+</head>
+  <body
+    class="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-slate-50 flex flex-col transition-colors"
+  >
+    <Navbar />
+
+    <main class="flex-1">
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>
