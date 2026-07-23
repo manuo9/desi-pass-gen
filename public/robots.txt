@@ -2,4 +2,4 @@ User-agent: *
 
 Allow: /
 
-Sitemap: https://www.desipassgen.com/sitemap.xml
+Sitemap: https://desipassgen.com/sitemap.xml
